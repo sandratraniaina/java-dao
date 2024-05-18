@@ -23,7 +23,7 @@ public class SQLBuilder {
         return query;
     }
 
-    public String getReadingQuery(Object object, boolean criteria)
+    public static String getReadingQuery(Object object, boolean criteria)
             throws DaoException, NoSuchFieldException, SecurityException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
         String tableName = SQLUtils.getTableName(object);
@@ -34,8 +34,8 @@ public class SQLBuilder {
         return query;
     }
 
-    //Private methods
-    private String getCriteriaQuery(Object object) throws NoSuchFieldException, SecurityException,
+    //Private imethods
+    private static String getCriteriaQuery(Object object) throws NoSuchFieldException, SecurityException,
             NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
         ArrayList<String> temp = new ArrayList<String>();
