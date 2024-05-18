@@ -13,6 +13,24 @@ public class Dao {
     SQLUtils sqlUtils;
 
     //Class method
+    public ArrayList<Object> readAllPagination(Connection connection, Object object, Pagination pagination) throws Exception {
+        if (connection == null) {
+            throw new DaoException("Connection cannot be null (readAllPagination).");
+        }
+        String query = SQLBuilder.getReadingQuery(object, false);
+        query += pagination.toQuery(getSqlUtils().getEngineType());
+        return getSqlUtils().executeQuery(connection, object, query);
+    }
+
+    public ArrayList<Object> readAllPagination(Object object, Pagination pagination) throws Exception {
+        Connection connection = getSqlUtils().getConnection();
+        ArrayList<Object> result =  readAllPagination(connection, object, pagination);
+        if (connection != null) {
+            connection.close();
+        }
+        return result;
+    }
+
     public ArrayList<Object> readAllRange(Connection connection, Object object, ArrayList<Range> ranges) throws Exception {
         if (connection == null) {
             throw new DaoException("Connection cannot be null (readAllRange).");
