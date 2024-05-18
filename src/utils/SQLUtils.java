@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import annotation.AnnotationAttribute;
 import annotation.AnnotationClass;
 import dao.exception.DaoException;
+import sql.SQLBuilder;
 
 public class SQLUtils {
     String url, driver, user, password, engineType;
@@ -105,6 +106,38 @@ public class SQLUtils {
             if (annotation != null) {
                 result.add(annotation.value());
             }
+        }
+        return result;
+    }
+
+    public ArrayList<Object> executeQuery (Connection connection, Object object, String query) throws SQLException, Exception {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        ArrayList<Object> result = new ArrayList<>();
+        boolean isValid = false;
+        try {
+            if (connection == null) {
+                connection = getConnection();
+                isValid = true;
+            }
+            connection.setAutoCommit(false);
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                result.add(getReadInstance(object, resultSet));
+            }
+        } catch (Exception err) {
+            if (connection != null) {
+                connection.close();
+            }
+            throw err;
+        } finally {
+            if (resultSet != null)
+                resultSet.close();
+            if (statement != null)
+                statement.close();
+            if (isValid && connection != null)
+                connection.close();
         }
         return result;
     }
