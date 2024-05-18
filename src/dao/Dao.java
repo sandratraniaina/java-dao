@@ -13,6 +13,26 @@ public class Dao {
     SQLUtils sqlUtils;
 
     //Class method
+    public ArrayList<Object> readAllRange(Connection connection, Object object, ArrayList<Range> ranges) throws Exception {
+        if (connection == null) {
+            throw new DaoException("Connection cannot be null (readAllRange).");
+        }
+        String query = SQLBuilder.getReadingQuery(object, false);
+        for (Range range : ranges) {
+            query += range.toQuery(null);
+        }
+        return getSqlUtils().executeQuery(connection, object, query);
+    }
+
+    public ArrayList<Object> readAllRange(Object object, ArrayList<Range> ranges) throws Exception {
+        Connection connection = getSqlUtils().getConnection();
+        ArrayList<Object> result =  readAllRange(connection, object, ranges);
+        if (connection != null) {
+            connection.close();
+        }
+        return result;
+    }
+
     public ArrayList<Object> readAllCriteria(Object object) throws Exception {
         Connection connection = getSqlUtils().getConnection();
         ArrayList<Object> result =  readAllCriteria(connection, object);
