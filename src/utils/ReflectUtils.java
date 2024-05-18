@@ -7,6 +7,10 @@ import java.util.ArrayList;
 
 public class ReflectUtils {
 
+    public String getClassName(Object object) {
+        return object.getClass().getSimpleName();
+    }
+
     public Object executeMethod(Object object, String methodName, Object... args) throws NoSuchMethodException,
             SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         Method method = object.getClass().getMethod(methodName, getArgsClasses(args));
