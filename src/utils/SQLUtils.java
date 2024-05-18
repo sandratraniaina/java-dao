@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import annotation.AnnotationAttribute;
+import annotation.AnnotationClass;
+import dao.exception.DaoException;
 
 public class SQLUtils {
     String url, driver, user, password, engineType;
@@ -30,6 +32,18 @@ public class SQLUtils {
         }
 
         return result;
+    }
+
+    public static String getTableName(Object object) throws DaoException {
+        AnnotationClass annotationClass = object.getClass().getAnnotation(AnnotationClass.class);
+        if (annotationClass == null) {
+            throw new DaoException("Annotation missing in class");
+        }
+        String tableName = annotationClass.value();
+        if (tableName == null || "".equals(tableName)) {
+            throw new DaoException("Table name cannot be null in annotation");
+        }
+        return tableName;
     }
 
     public static String getColumnName(Object object, String attributeName) throws NoSuchFieldException, SecurityException {
