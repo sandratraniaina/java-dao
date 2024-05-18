@@ -3,9 +3,18 @@ package utils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ReflectUtils {
+
+    public static Class<?> getObjectClass(Object object, String type) throws Exception {
+        Class<?> objClass = type.equalsIgnoreCase("date") ? Date.class
+                : type.equalsIgnoreCase("localdate") ? LocalDate.class
+                        : type.equalsIgnoreCase("string") ? String.class
+                                : type.equalsIgnoreCase("double") ? Double.TYPE : Integer.TYPE;
+        return objClass;
+    }
 
     public String getClassName(Object object) {
         return object.getClass().getSimpleName();
