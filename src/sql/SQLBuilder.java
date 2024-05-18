@@ -4,12 +4,27 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import dao.exception.DaoException;
 import utils.ArrayUtils;
 import utils.ReflectUtils;
 import utils.SQLUtils;
 import utils.StringUtils;
 
 public class SQLBuilder {
+
+    //Class methods
+    public String getReadingQuery(Object object, boolean criteria)
+            throws DaoException, NoSuchFieldException, SecurityException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+        String tableName = SQLUtils.getTableName(object);
+        String query = "SELECT * FROM " + tableName + " WHERE 1 = 1 ";
+        if (criteria) {
+            query += getCriteriaQuery(object);
+        }
+        return query;
+    }
+
+    //Private methods
     private String getCriteriaQuery(Object object) throws NoSuchFieldException, SecurityException,
             NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
