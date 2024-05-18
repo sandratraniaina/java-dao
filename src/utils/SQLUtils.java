@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -106,6 +107,34 @@ public class SQLUtils {
             }
         }
         return result;
+    }
+
+    public void execute(Connection connection, Object object, String query) throws Exception {
+        PreparedStatement statement = null;
+        boolean isValid = false;
+        try {
+            if (connection == null) {
+                connection = getConnection();
+                isValid = true;
+            }
+            connection.setAutoCommit(false);
+            statement = connection.prepareStatement(query);
+            statement.executeUpdate();
+            connection.commit();
+        } catch (Exception err) {
+            if (connection != null) {
+                connection.rollback();
+                connection.close();
+            }
+            throw err;
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+            if (isValid && connection != null) {
+                connection.close();
+            }
+        }
     }
 
     public Connection getConnection() throws ClassNotFoundException, SQLException {

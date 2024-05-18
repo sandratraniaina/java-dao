@@ -17,11 +17,11 @@ public class Dao {
             throw new DaoException("Connection cannot be null (save).");
         }
         String query = SQLBuilder.getInsertingQuery(object);
-        SQLUtils.execute(connection, object, query);
+        getSqlUtils().execute(connection, object, query);
     }
     
     public void save (Object object) throws Exception {
-        Connection connection = SQLUtils.getConnection();
+        Connection connection = getSqlUtils().getConnection();
         save(connection, object);
         if (connection != null) {
             connection.close();
