@@ -2,7 +2,10 @@ package utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import annotation.AnnotationAttribute;
@@ -103,6 +106,11 @@ public class SQLUtils {
             }
         }
         return result;
+    }
+
+    public Connection getConnection() throws ClassNotFoundException, SQLException {
+        Class.forName(getDriver());
+        return DriverManager.getConnection(getUrl(), getUser(), getPassword());
     }
 
     //Contstructors

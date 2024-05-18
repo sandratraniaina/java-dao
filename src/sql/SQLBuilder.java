@@ -13,7 +13,7 @@ import utils.StringUtils;
 public class SQLBuilder {
 
     //Class methods
-    public String getInsertingQuery(Object object) throws DaoException, NoSuchFieldException, Exception {
+    public static String getInsertingQuery(Object object) throws DaoException, NoSuchFieldException, Exception {
         String tableName = SQLUtils.getTableName(object);
         ArrayList<String> columnNames = SQLUtils.getColumnNames(object);
         String joinedAttributes = ArrayUtils.join(columnNames, ", ");
