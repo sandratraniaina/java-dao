@@ -11,6 +11,27 @@ public class SQLUtils {
     String url, driver, user, password, engineType;
 
     //Class method
+    public static Object getReadInstance(Object object, ResultSet resultSet) throws Exception {
+        Object result = object.getClass().getConstructor().newInstance();
+        ArrayList<String> attributes = ReflectUtils.getAttributeNames(object);
+
+        String methodName = "";
+        Method method = null;
+        Object value = null;
+
+        for (String attribute : attributes) {
+            String columnName = SQLUtils.getColumnName(object, attribute);
+            if (columnName != null && !"".equals(columnName)) {
+                methodName = "set" + StringUtils.capitalize(attribute);
+                value = resultSet.getObject(columnName);
+                method = object.getClass().getMethod(methodName, value.getClass());
+                method.invoke(result, value);
+            }
+        }
+
+        return result;
+    }
+
     public static String getColumnName(Object object, String attributeName) throws NoSuchFieldException, SecurityException {
         String result = null;
         Field field = object.getClass().getDeclaredField(attributeName);
