@@ -34,6 +34,19 @@ public class SQLUtils {
         return result;
     }
 
+    public static String toQueryValue(Object object) {
+        ArrayList<Class<?>> withoutQuotes = new ArrayList<Class<?>>();
+        withoutQuotes.add(Integer.TYPE);
+        withoutQuotes.add(Double.TYPE);
+        withoutQuotes.add(Float.TYPE);
+
+        if (withoutQuotes.contains(object.getClass())) {
+            return object.toString();
+        }
+
+        return "\'" + object + "\'";
+    }
+
     public static String getTableName(Object object) throws DaoException {
         AnnotationClass annotationClass = object.getClass().getAnnotation(AnnotationClass.class);
         if (annotationClass == null) {
