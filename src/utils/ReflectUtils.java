@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class ReflectUtils {
 
-    public boolean isDefaultValue(Object object) {
+    public static boolean isDefaultValue(Object object) {
         HashMap<Class<?>, Object> keyValues = new HashMap<Class<?>, Object>();
         keyValues.put(Integer.TYPE, 0);
         keyValues.put(Double.TYPE, 0.0);
@@ -32,7 +32,7 @@ public class ReflectUtils {
         return objClass;
     }
 
-    public String getClassName(Object object) {
+    public static String getClassName(Object object) {
         return object.getClass().getSimpleName();
     }
 
