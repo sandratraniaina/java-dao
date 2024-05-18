@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import annotation.AnnotationAttribute;
 import annotation.AnnotationClass;
 import dao.exception.DaoException;
-import sql.SQLBuilder;
 
 public class SQLUtils {
     String url, driver, user, password, engineType;
