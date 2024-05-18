@@ -5,7 +5,14 @@ public class Pagination extends Criteria{
 
     @Override
     public String toQuery(String dbEngine) throws Exception {
-        return null;
+        if (dbEngine.equalsIgnoreCase("oracle")) {
+            return " FETCH FIRST " + getLimit() + " ONLY OFFSET " + getOffset() + " ROWS";
+        } else if (dbEngine.equalsIgnoreCase("mssqlserver")) {
+            return " OFFSET " + getOffset() + " FETCH NEXT " + getLimit() + " ROWS ONLY";
+        } else if (dbEngine.equalsIgnoreCase("mysql") || dbEngine.equalsIgnoreCase("postgres")) {
+            return " LIMIT " + getLimit() + " OFFSET " + getOffset();
+        }
+        throw new Exception("Invalid database engine.");
     }
     
     //Constructors
