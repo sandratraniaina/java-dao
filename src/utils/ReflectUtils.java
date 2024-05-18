@@ -3,10 +3,26 @@ package utils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ReflectUtils {
+
+    public boolean isDefaultValue(Object object) {
+        HashMap<Class<?>, Object> keyValues = new HashMap<Class<?>, Object>();
+        keyValues.put(Integer.TYPE, 0);
+        keyValues.put(Double.TYPE, 0.0);
+        keyValues.put(String.class, "");
+        keyValues.put(Date.class, null);
+
+        Object defaultValue = keyValues.get(object.getClass());
+        if (defaultValue == null) {
+            return object == null;
+        }
+        return defaultValue.equals(object);
+    }
 
     public static Class<?> getObjectClass(Object object, String type) throws Exception {
         Class<?> objClass = type.equalsIgnoreCase("date") ? Date.class
