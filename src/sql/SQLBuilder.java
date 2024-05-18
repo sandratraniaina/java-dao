@@ -13,6 +13,16 @@ import utils.StringUtils;
 public class SQLBuilder {
 
     //Class methods
+    public String getInsertingQuery(Object object) throws DaoException, NoSuchFieldException, Exception {
+        String tableName = SQLUtils.getTableName(object);
+        ArrayList<String> columnNames = SQLUtils.getColumnNames(object);
+        String joinedAttributes = ArrayUtils.join(columnNames, ", ");
+        String queryHeader = "INSERT INTO " + tableName + "(" + joinedAttributes + ") VALUES \n";
+        String queryBody = "(" + ArrayUtils.join(SQLUtils.getColumnValues(object), ", ") + ")";
+        String query = queryHeader + queryBody;
+        return query;
+    }
+
     public String getReadingQuery(Object object, boolean criteria)
             throws DaoException, NoSuchFieldException, SecurityException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {

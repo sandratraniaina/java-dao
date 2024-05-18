@@ -69,6 +69,28 @@ public class SQLUtils {
         return result;
     }
 
+    public static ArrayList<String> getColumnValues(Object object) throws Exception {
+        ArrayList<String> attributes = ReflectUtils.getAttributeNames(object);
+        ArrayList<String> result = new ArrayList<String>();
+        for (String attribute : attributes) {
+            Field field = object.getClass().getDeclaredField(attribute);
+            AnnotationAttribute annotation = field.getAnnotation(AnnotationAttribute.class);
+            if (annotation != null) {
+                Object temp = ReflectUtils.executeMethod(object, "get" + StringUtils.capitalize(attribute));
+                if (temp == null) {
+                    throw new DaoException("Class value cannot be null");
+                }
+                String type = field.getType().getName();
+                String value = temp.toString();
+                if (!type.equalsIgnoreCase("double") && !type.equalsIgnoreCase("int")) {
+                    value = StringUtils.enclose(value, "\'");
+                }
+                result.add(value);
+            }
+        }
+        return result;
+    }
+
 
     public static ArrayList<String> getColumnNames(Object object) throws NoSuchFieldException, SecurityException {
         ArrayList<String> attributes = ReflectUtils.getAttributeNames(object);

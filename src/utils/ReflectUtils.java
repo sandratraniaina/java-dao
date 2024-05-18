@@ -36,7 +36,7 @@ public class ReflectUtils {
         return object.getClass().getSimpleName();
     }
 
-    public Object executeMethod(Object object, String methodName, Object... args) throws NoSuchMethodException,
+    public static Object executeMethod(Object object, String methodName, Object... args) throws NoSuchMethodException,
             SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         Method method = object.getClass().getMethod(methodName, getArgsClasses(args));
         return method.invoke(object, args);
