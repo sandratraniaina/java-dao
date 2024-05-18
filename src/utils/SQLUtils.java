@@ -1,6 +1,8 @@
 package utils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import annotation.AnnotationAttribute;
@@ -9,6 +11,17 @@ public class SQLUtils {
     String url, driver, user, password, engineType;
 
     //Class method
+    public static String getColumnName(Object object, String attributeName) throws NoSuchFieldException, SecurityException {
+        String result = null;
+        Field field = object.getClass().getDeclaredField(attributeName);
+        AnnotationAttribute annotation = field.getAnnotation(AnnotationAttribute.class);
+        if (annotation != null) {
+            result = annotation.value();
+        }
+        return result;
+    }
+
+
     public static ArrayList<String> getColumnNames(Object object) throws NoSuchFieldException, SecurityException {
         ArrayList<String> attributes = ReflectUtils.getAttributeNames(object);
         ArrayList<String> result = new ArrayList<String>();
