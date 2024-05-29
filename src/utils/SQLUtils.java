@@ -9,8 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import annotation.AnnotationAttribute;
-import annotation.AnnotationClass;
+import annotation.Column;
+import annotation.Table;
 import dao.exception.DaoException;
 
 public class SQLUtils {
@@ -52,7 +52,7 @@ public class SQLUtils {
     }
 
     public static String getTableName(Object object) throws DaoException {
-        AnnotationClass annotationClass = object.getClass().getAnnotation(AnnotationClass.class);
+        Table annotationClass = object.getClass().getAnnotation(Table.class);
         if (annotationClass == null) {
             throw new DaoException("Annotation missing in class");
         }
@@ -66,7 +66,7 @@ public class SQLUtils {
     public static String getColumnName(Object object, String attributeName) throws NoSuchFieldException, SecurityException {
         String result = null;
         Field field = object.getClass().getDeclaredField(attributeName);
-        AnnotationAttribute annotation = field.getAnnotation(AnnotationAttribute.class);
+        Column annotation = field.getAnnotation(Column.class);
         if (annotation != null) {
             result = annotation.value();
         }
@@ -78,7 +78,7 @@ public class SQLUtils {
         ArrayList<String> result = new ArrayList<String>();
         for (String attribute : attributes) {
             Field field = object.getClass().getDeclaredField(attribute);
-            AnnotationAttribute annotation = field.getAnnotation(AnnotationAttribute.class);
+            Column annotation = field.getAnnotation(Column.class);
             if (annotation != null) {
                 Object temp = ReflectUtils.executeMethod(object, "get" + StringUtils.capitalize(attribute));
                 if (temp == null) {
@@ -101,7 +101,7 @@ public class SQLUtils {
         ArrayList<String> result = new ArrayList<String>();
         for (String attribute : attributes) {
             Field field = object.getClass().getDeclaredField(attribute);
-            AnnotationAttribute annotation = field.getAnnotation(AnnotationAttribute.class);
+            Column annotation = field.getAnnotation(Column.class);
             if (annotation != null) {
                 result.add(annotation.value());
             }
