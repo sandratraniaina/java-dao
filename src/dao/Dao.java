@@ -2,12 +2,14 @@ package dao;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import dao.exception.DaoException;
 import sql.criteria.Pagination;
 import sql.criteria.Range;
 import sql.SQLBuilder;
 import utils.SQLUtils;
+import utils.XMLHandler;
 
 public class Dao {
     SQLUtils sqlUtils;
@@ -102,8 +104,17 @@ public class Dao {
     }
 
     //Constructors
-    public Dao() {}
-    public Dao(SQLUtils sqlUtils) {
+    public Dao(String contextPath) throws Exception {
+        HashMap<String, String> dbInfo = XMLHandler.getRootValues(contextPath);
+        
+        SQLUtils sqlUtils = new SQLUtils();
+
+        sqlUtils.setUrl(dbInfo.get("url"));
+        sqlUtils.setDriver(dbInfo.get("driver"));
+        sqlUtils.setEngineType(dbInfo.get("engine"));
+        sqlUtils.setPassword(dbInfo.get("password"));
+        sqlUtils.setUser(dbInfo.get("user"));
+
         setSqlUtils(sqlUtils);
     }
 
